@@ -1,0 +1,7 @@
+{
+  "name": "ic3-contacts-crud",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
