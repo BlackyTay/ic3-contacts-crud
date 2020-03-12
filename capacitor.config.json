@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "io.ionic.contacts-crud",
   "appName": "ic3-contacts-crud",
   "bundledWebRuntime": false,
   "npmClient": "npm",
