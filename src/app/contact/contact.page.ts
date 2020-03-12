@@ -34,13 +34,48 @@ export class ContactPage implements OnInit {
     }
   }
 
+  checkContact(): boolean {
+    
+    if(this.contact.firstName==''){
+      this.toastCtrl.create({
+        message: 'First Name cannot be empty',
+        duration: 500
+      }).then((toast) => 
+      toast.present());
+      return false;
+    }
+    
+    if(this.contact.lastName==''){
+      this.toastCtrl.create({
+        message: 'Last Name cannot be empty',
+        duration: 500
+      }).then((toast) => 
+      toast.present());
+      return false;
+    }
+    
+    if(this.contact.mobileNumber==''){
+      this.toastCtrl.create({
+        message: 'Mobile Number cannot be empty',
+        duration: 500
+      }).then((toast) => 
+      toast.present());
+      return false;
+    }
+    
+    return true;
+  }
+
   saveContact() {
     this.contactService.save();
-    this.toastCtrl.create({
-      message: 'Contact Saved',
-      duration: 500
-    }).then((toast)=> toast.present());
-    this.router.navigate(['./contacts']);
+
+    if(this.checkContact()){
+      this.toastCtrl.create({
+        message: 'Contact Saved',
+        duration: 500
+      }).then((toast)=> toast.present());
+      this.router.navigate(['./contacts']);
+    }
   }
 
   deleteContact() {
