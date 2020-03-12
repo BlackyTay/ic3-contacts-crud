@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { NativeContactService } from '../services/native-contact.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit{
   subscription: any;
 
-  constructor(private contactService: ContactService, private toastCtrl: ToastController, private platform: Platform, private router: Router) {}
+  constructor(private contactService: NativeContactService, private toastCtrl: ToastController, private platform: Platform, private router: Router) {}
 
   ngOnInit() {
     this.contactService.load();

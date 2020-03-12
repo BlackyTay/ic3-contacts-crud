@@ -19,8 +19,8 @@
   </ion-header>
 
   <ion-list>
-    <ion-item button detail *ngFor="let contact of contactService.contacts | orderBy:'firstName'" [routerLink]="'/contact/' + contact.id" routerDirection="forward">
-      <ion-label>{{contact.firstName}} {{contact.lastName}}</ion-label>
+    <ion-item button detail *ngFor="let contact of contactService.contactlist | orderBy:'firstName'" [routerLink]="'/contact/' + contact.id" routerDirection="forward">
+      <ion-label>{{ contact.id }} : {{ contact.raw_contact_id }} :: {{contact.firstName}} {{contact.lastName}}</ion-label>
     </ion-item>
   </ion-list>
 </ion-content>

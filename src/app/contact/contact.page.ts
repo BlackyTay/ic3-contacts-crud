@@ -3,6 +3,7 @@ import { ContactService } from '../services/contact.service';
 import { Contact } from '../interfaces/contact';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { NativeContactService } from '../services/native-contact.service';
 
 @Component({
   selector: 'app-contact',
@@ -12,9 +13,10 @@ import { ToastController } from '@ionic/angular';
 export class ContactPage implements OnInit {
   public contact: Contact;
 
-  constructor(private contactService: ContactService, private router: Router, private route: ActivatedRoute, private toastCtrl: ToastController) {
+  constructor(private contactService: NativeContactService, private router: Router, private route: ActivatedRoute, private toastCtrl: ToastController) {
     this.contact = {
       id: '',
+      raw_contact_id: '',
       firstName: '',
       lastName: '',
       mobileNumber: '',
@@ -67,7 +69,7 @@ export class ContactPage implements OnInit {
   }
 
   saveContact() {
-    this.contactService.save();
+    this.contactService.save(this.contact);
 
     if(this.checkContact()){
       this.toastCtrl.create({

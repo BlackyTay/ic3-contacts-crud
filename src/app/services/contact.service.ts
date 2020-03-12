@@ -35,13 +35,13 @@ export class ContactService {
   public createContact(): string {
     let id = Math.max(...this.contacts.map(contact => parseInt(contact.id)), 0) + 1;
     
-    this.contacts.push({
-      id: id.toString(),
-      firstName: '',
-      lastName: '',
-      mobileNumber: '',
-      notes: ''
-    });
+    // this.contacts.push({
+    //   id: id.toString(),
+    //   firstName: '',
+    //   lastName: '',
+    //   mobileNumber: '',
+    //   notes: ''
+    // });
 
     this.save();
     return id.toString();
