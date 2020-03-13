@@ -83,6 +83,8 @@ export class NativeContactService {
         console.log('Contact Not Exist');
         let newc = this.contacts.create();
         newc.name = new ContactName(null, '', '');
+        newc.displayName = '';
+        newc.nickname = '';
         newc.note = '';
         newc.save().then(() =>{
           data.raw_contact_id = newc.rawId;
