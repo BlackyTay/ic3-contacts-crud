@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Contact } from '../interfaces/contact';
-import { Contacts, ContactFieldType, ContactFindOptions, ContactField } from '@ionic-native/contacts/ngx';
+import { Contacts, ContactFieldType, ContactFindOptions, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
@@ -47,6 +47,7 @@ export class NativeContactService {
     options.filter = data.raw_contact_id;
     options.multiple = true;
     this.contacts.find(this.contactFieldId, options).then((contact) => {
+      let bool = false;
       // if(contact[0] != null){
       //   contact[0].name.familyName = data.firstName;
       //   contact[0].name.givenName = data.lastName;
@@ -60,16 +61,38 @@ export class NativeContactService {
 
       contact.forEach((c) => {
         console.log(c.rawId, ' :: ', data.raw_contact_id);
+          console.log(c);
         if(c.rawId == data.raw_contact_id){
-            c.name.familyName = data.firstName;
-            c.name.givenName = data.lastName;
-            c.phoneNumbers[0] = new ContactField('mobile', data.mobileNumber);
+          console.log(c.name);
+            c.name = new ContactName(null, data.lastName, data.firstName);
+            console.log(c.name);
+            c.displayName = data.firstName+' '+data.lastName;
+            c.nickname = data.firstName;
+            // c.name.familyName = data.firstName;
+            // c.name.givenName = data.lastName;
+            c.phoneNumbers= [new ContactField('mobile', data.mobileNumber)];
             c.note = data.notes;
-            c.save();
-            console.log('Contact Saved');
+            c.save().then(()=>console.log(c));
+            console.log('Contact Modified');
+            bool = true;
         }
       }
       );
+
+      if(!bool) {
+        console.log('Contact Not Exist');
+        let newc = this.contacts.create();
+        newc.name = new ContactName(null, '', '');
+        newc.note = '';
+        newc.save().then(() =>{
+          data.raw_contact_id = newc.rawId;
+          this.save(data);
+        } );
+        // newc.id = data.id;
+        // data.raw_contact_id = newc.rawId;
+        // console.log(data.raw_contact_id, " : ", newc.rawId);
+        // this.save(data);
+      }
     })
   }
 
@@ -89,7 +112,7 @@ export class NativeContactService {
       notes: ''
     });
 
-    this.save(this.getContact(id));
+    // this.save(this.getContact(id));
     return id;
   }
 
