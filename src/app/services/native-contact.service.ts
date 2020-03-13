@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 import { Contact } from '../interfaces/contact';
 import { Contacts, ContactFieldType, ContactFindOptions, ContactField, ContactName } from '@ionic-native/contacts/ngx';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import { WebView } from '@ionic-native/ionic-webview/ngx'
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,7 @@ export class NativeContactService {
   public contactlist: Contact[] = [];
   public loaded: boolean = false;
 
-  constructor(private storage: Storage, private contacts: Contacts, private sanitizer: DomSanitizer) { }
+  constructor(private storage: Storage, private contacts: Contacts, private sanitizer: DomSanitizer, private webView: WebView) { }
 
   public load(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -22,15 +22,23 @@ export class NativeContactService {
         {multiple:true, hasPhoneNumber:true}
       ).then((contacts) => {
         contacts.forEach((contact) => {
-          this.contactlist.push({
+          let tempC: Contact = {
             'id': contact.id,
             'raw_contact_id': contact.rawId,
             'firstName': contact.name.givenName,
             'lastName': contact.name.familyName,
             'mobileNumber': contact.phoneNumbers[0].value.toString(),
             'notes': contact.note
-          });
-          console.log('Contact get');
+          }
+          this.contactlist.push(tempC);
+          let index = this.contactlist.indexOf(tempC);
+          if(contact.photos != null){
+            this.contactlist[index].image = this.webView.convertFileSrc(contact.photos[0].value);
+            // this.contactlist[index].image = this.sanitizer.bypassSecurityTrustUrl(contact.photos[0].value);
+          } else {
+            this.contactlist[index].image = 'assets/icon/favicon.png';
+          }
+          console.log('Contact get', this.contactlist[index], ' : ', contact);
         });
       });
 

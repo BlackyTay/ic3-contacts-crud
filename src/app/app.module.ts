@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { Contacts } from '@ionic-native/contacts/ngx';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Contacts
+    Contacts,
+    WebView
   ],
   bootstrap: [AppComponent]
 })
